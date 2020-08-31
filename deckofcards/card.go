@@ -3,6 +3,7 @@ package deck
 import (
 	"errors"
 	"fmt"
+	"math/rand"
 )
 
 // Card ...
@@ -53,5 +54,15 @@ func NewDeck() ([]Card, error) {
 		}
 	}
 
+	// fmt.Println(LogMessage("info.deck.new.deck", fmt.Sprintf("%v", deckOfCards)))
 	return deckOfCards, nil
+}
+
+// ShuffleDeck ...
+// This method shuffles the card of the current deck
+// Parameters:
+// - deckOfCards: ([]Card) The current deck of cards, presumably unshuffled
+func ShuffleDeck(deckOfCards []Card) {
+	rand.Shuffle(len(deckOfCards), func(i, j int) { deckOfCards[i], deckOfCards[j] = deckOfCards[j], deckOfCards[i] })
+	// fmt.Println(LogMessage("info.deck.shuffled.deck", fmt.Sprintf("%v", deckOfCards)))
 }

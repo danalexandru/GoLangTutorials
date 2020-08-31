@@ -2,6 +2,7 @@ package deck
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 )
 
@@ -58,5 +59,47 @@ func TestNewDeck(t *testing.T) {
 
 	if err != nil {
 		t.Error(err)
+	}
+}
+
+// TestShuffleDeck ...
+// This method shuffles the current deck of cards
+func TestShuffleDeck(t *testing.T) {
+	deckOfCards, err := NewDeck()
+	shuffledDeckOfCards, _ := NewDeck()
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	copy(shuffledDeckOfCards[:], deckOfCards)
+
+	ShuffleDeck(shuffledDeckOfCards)
+
+	if len(deckOfCards) != len(shuffledDeckOfCards) {
+		t.Error(LogMessage("error.deck.shuffle.elements.number",
+			fmt.Sprintf("%d", len(deckOfCards)),
+			fmt.Sprintf("%d", len(shuffledDeckOfCards))))
+	}
+
+	isEqual := func(deck1, deck2 []Card) bool {
+		for i := range deck1 {
+			if deck1[i] != deck2[i] {
+				return false
+			}
+		}
+
+		return true
+	}
+
+	numberOfAttempts := 1
+	for isEqual(deckOfCards, shuffledDeckOfCards) {
+		if numberOfAttempts == 3 {
+			t.Error(LogMessage("error.deck.shuffle.elements.match"))
+			break
+		} else {
+			ShuffleDeck(shuffledDeckOfCards)
+			numberOfAttempts++
+		}
 	}
 }
