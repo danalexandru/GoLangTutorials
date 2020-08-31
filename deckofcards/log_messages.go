@@ -14,6 +14,9 @@ var log = map[string]string{
 	"info.deck.shuffled.deck":            "Shuffled Deck: {0}",
 	"error.deck.shuffle.elements.number": "Inconsistent number of elements after shuffle. Old deck: {0} cards, New deck: {1} cards.",
 	"error.deck.shuffle.elements.match":  "The deck was not shuffled. The elements are in the same position",
+	"error.deck.sort.elements.number":    "Inconsistent number of elements after sorting. Old deck: {0} cards, New deck: {1} cards.",
+	"error.deck.sort.elements.by.type":   "The deck was not sorted successfully. \"{0}\" card type was placed before the \"{1}\" one.",
+	"error.deck.sort.elements.by.value":  "The deck was not sorted successfully. A card with the value of {0} was placed before another card with the value of {1}.",
 }
 
 // LogMessage ...

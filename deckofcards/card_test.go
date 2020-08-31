@@ -63,7 +63,7 @@ func TestNewDeck(t *testing.T) {
 }
 
 // TestShuffleDeck ...
-// This method shuffles the current deck of cards
+// This method tests the functionality of the "ShuffleDeck" method from "card.go"
 func TestShuffleDeck(t *testing.T) {
 	deckOfCards, err := NewDeck()
 	shuffledDeckOfCards, _ := NewDeck()
@@ -102,4 +102,48 @@ func TestShuffleDeck(t *testing.T) {
 			numberOfAttempts++
 		}
 	}
+}
+
+// TestSortDeck ...
+// This method tests the functionality of the "SortDeck" method from "card.go"
+func TestSortDeck(t *testing.T) {
+	deckOfCards, err := NewDeck()
+	sortedDeckOfCards, _ := NewDeck()
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	copy(sortedDeckOfCards[:], deckOfCards)
+
+	ShuffleDeck(deckOfCards)
+	SortDeck(sortedDeckOfCards)
+
+	if len(deckOfCards) != len(sortedDeckOfCards) {
+		t.Error(LogMessage("error.deck.sort.elements.number",
+			fmt.Sprintf("%d", len(deckOfCards)),
+			fmt.Sprintf("%d", len(sortedDeckOfCards))))
+	}
+
+	cardTypes := []string{"spades", "hearts", "clubs", "diamonds"}
+	getIndexOfCardType := func(cardType string) int {
+		for index, value := range cardTypes {
+			if value == cardType {
+				return index
+			}
+		}
+
+		return -1
+	}
+
+	for i := 0; i < len(sortedDeckOfCards)-1; i++ {
+		switch {
+		case getIndexOfCardType(sortedDeckOfCards[i].Type) > getIndexOfCardType(sortedDeckOfCards[i+1].Type):
+			t.Error(LogMessage("error.deck.sort.elements.by.type", sortedDeckOfCards[i].Type, sortedDeckOfCards[i+1].Type))
+		case getIndexOfCardType(sortedDeckOfCards[i].Type) == getIndexOfCardType(sortedDeckOfCards[i+1].Type) &&
+			sortedDeckOfCards[i].Value > sortedDeckOfCards[i+1].Value:
+			t.Error(LogMessage("error.deck.sort.elements.by.type", sortedDeckOfCards[i].Type, sortedDeckOfCards[i+1].Type))
+		}
+	}
+
 }

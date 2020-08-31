@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"sort"
 )
 
 // Card ...
@@ -39,7 +40,7 @@ func NewCard(value int, cardType string) (Card, error) {
 // This method returns a new deck of cards
 // Returns: ([]Card) a slice containing all 52 possible cards in order
 func NewDeck() ([]Card, error) {
-	cardTypes := []string{"spades", "hearts", "diamonds", "clubs"}
+	cardTypes := []string{"spades", "hearts", "clubs", "diamonds"}
 
 	deckOfCards := []Card{}
 	for _, cardType := range cardTypes {
@@ -65,4 +66,35 @@ func NewDeck() ([]Card, error) {
 func ShuffleDeck(deckOfCards []Card) {
 	rand.Shuffle(len(deckOfCards), func(i, j int) { deckOfCards[i], deckOfCards[j] = deckOfCards[j], deckOfCards[i] })
 	// fmt.Println(LogMessage("info.deck.shuffled.deck", fmt.Sprintf("%v", deckOfCards)))
+}
+
+// SortDeck ...
+// This method sorts the cards of a deck (poresumably shuffled) in ascending order
+// Parameters:
+// - deckOfCards (sort.Interface) The deck of cards that needs to be sorted
+func SortDeck(deckOfCards []Card) {
+	cardTypes := []string{"spades", "hearts", "clubs", "diamonds"}
+	getIndexOfCardType := func(cardType string) int {
+		for index, value := range cardTypes {
+			if value == cardType {
+				return index
+			}
+		}
+
+		return -1
+	}
+
+	sort.SliceStable(deckOfCards, func(i, j int) bool {
+		switch {
+		case getIndexOfCardType(deckOfCards[i].Type) == -1 || getIndexOfCardType(deckOfCards[j].Type) == -1:
+			return false
+		case getIndexOfCardType(deckOfCards[i].Type) < getIndexOfCardType(deckOfCards[j].Type):
+			return true
+		case getIndexOfCardType(deckOfCards[i].Type) == getIndexOfCardType(deckOfCards[j].Type) &&
+			deckOfCards[i].Value < deckOfCards[j].Value:
+			return true
+		default:
+			return false
+		}
+	})
 }
