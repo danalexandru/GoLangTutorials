@@ -14,13 +14,13 @@ type input struct {
 
 // "spades", "hearts", "diamonds", "clubs"
 var inputs = []input{
-	{Value: -1, Type: "gigi", ExpectedCard: Card{}, ExpectedError: errors.New(LogMessage["error.card.invalid.type"])},
-	{Value: 0, Type: "spades", ExpectedCard: Card{}, ExpectedError: errors.New(LogMessage["error.card.invalid.value"])},
-	{Value: 1, Type: "hearts", ExpectedCard: Card{}, ExpectedError: errors.New(LogMessage["error.card.invalid.value"])},
+	{Value: -1, Type: "gigi", ExpectedCard: Card{}, ExpectedError: errors.New(LogMessage("error.card.invalid.type", "gigi"))},
+	{Value: 0, Type: "spades", ExpectedCard: Card{}, ExpectedError: errors.New(LogMessage("error.card.invalid.value", "0"))},
+	{Value: 1, Type: "hearts", ExpectedCard: Card{}, ExpectedError: errors.New(LogMessage("error.card.invalid.value", "1"))},
 	{Value: 2, Type: "diamonds", ExpectedCard: Card{2, "diamonds"}, ExpectedError: nil},
 	{Value: 3, Type: "spades", ExpectedCard: Card{3, "spades"}, ExpectedError: nil},
 	{Value: 4, Type: "clubs", ExpectedCard: Card{4, "clubs"}, ExpectedError: nil},
-	{Value: 5, Type: "gigi", ExpectedCard: Card{}, ExpectedError: errors.New(LogMessage["error.card.invalid.type"])},
+	{Value: 5, Type: "gigi", ExpectedCard: Card{}, ExpectedError: errors.New(LogMessage("error.card.invalid.type", "gigi"))},
 	{Value: 6, Type: "spades", ExpectedCard: Card{6, "spades"}, ExpectedError: nil},
 	{Value: 7, Type: "hearts", ExpectedCard: Card{7, "hearts"}, ExpectedError: nil},
 	{Value: 8, Type: "diamonds", ExpectedCard: Card{8, "diamonds"}, ExpectedError: nil},
@@ -30,8 +30,8 @@ var inputs = []input{
 	{Value: 12, Type: "diamonds", ExpectedCard: Card{12, "diamonds"}, ExpectedError: nil},
 	{Value: 13, Type: "clubs", ExpectedCard: Card{13, "clubs"}, ExpectedError: nil},
 	{Value: 14, Type: "spades", ExpectedCard: Card{14, "spades"}, ExpectedError: nil},
-	{Value: 15, Type: "hearts", ExpectedCard: Card{}, ExpectedError: errors.New(LogMessage["error.card.invalid.value"])},
-	{Value: 16, Type: "gigi", ExpectedCard: Card{}, ExpectedError: errors.New(LogMessage["error.card.invalid.type"])},
+	{Value: 15, Type: "hearts", ExpectedCard: Card{}, ExpectedError: errors.New(LogMessage("error.card.invalid.value", "15"))},
+	{Value: 16, Type: "gigi", ExpectedCard: Card{}, ExpectedError: errors.New(LogMessage("error.card.invalid.type", "gigi"))},
 }
 
 func TestNewCard(t *testing.T) {

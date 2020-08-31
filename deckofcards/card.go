@@ -1,6 +1,9 @@
 package deck
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 // Card ...
 // Structure used for representing one card from a deck
@@ -20,8 +23,10 @@ func NewCard(value int, cardType string) (Card, error) {
 		if value >= 2 && value <= 14 {
 			return Card{value, cardType}, nil
 		}
-		return Card{}, errors.New(LogMessage["error.card.invalid.value"])
+
+		stringValue := fmt.Sprintf("%d", value)
+		return Card{}, errors.New(LogMessage("error.card.invalid.value", stringValue))
 	default:
-		return Card{}, errors.New(LogMessage["error.card.invalid.type"])
+		return Card{}, errors.New(LogMessage("error.card.invalid.type", cardType))
 	}
 }
