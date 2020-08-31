@@ -34,6 +34,8 @@ var inputs = []input{
 	{Value: 16, Type: "gigi", ExpectedCard: Card{}, ExpectedError: errors.New(LogMessage("error.card.invalid.type", "gigi"))},
 }
 
+// TestNewCard ...
+// This method tests the functionality of the "NewCard" method from "card.go"
 func TestNewCard(t *testing.T) {
 	for testIndex, item := range inputs {
 		card, err := NewCard(item.Value, item.Type)
@@ -46,5 +48,15 @@ func TestNewCard(t *testing.T) {
 				testIndex, item, item.ExpectedCard, card, item.ExpectedError, err)
 		}
 
+	}
+}
+
+// TestNewDeck ...
+// This method tests the functionality of the "NewDeck" method from "card.go"
+func TestNewDeck(t *testing.T) {
+	_, err := NewDeck()
+
+	if err != nil {
+		t.Error(err)
 	}
 }
