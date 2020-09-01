@@ -147,3 +147,28 @@ func TestSortDeck(t *testing.T) {
 	}
 
 }
+
+func TestString(t *testing.T) {
+	// "spades", "hearts", "diamonds", "clubs"
+	type stringInput struct {
+		card           Card
+		expectedString string
+	}
+	testCards := []stringInput{
+		{card: Card{Value: 2, Type: "spades"}, expectedString: "2 of Spades"},
+		{card: Card{Value: 4, Type: "hearts"}, expectedString: "4 of Hearts"},
+		{card: Card{Value: 6, Type: "diamonds"}, expectedString: "6 of Diamonds"},
+		{card: Card{Value: 8, Type: "clubs"}, expectedString: "8 of Clubs"},
+		{card: Card{Value: 10, Type: "spades"}, expectedString: "10 of Spades"},
+		{card: Card{Value: 11, Type: "hearts"}, expectedString: "Ace of Hearts"},
+		{card: Card{Value: 12, Type: "diamonds"}, expectedString: "Jack of Diamonds"},
+		{card: Card{Value: 13, Type: "clubs"}, expectedString: "Queen of Clubs"},
+		{card: Card{Value: 14, Type: "spades"}, expectedString: "King of Spades"},
+	}
+
+	for index, test := range testCards {
+		if test.card.String() != test.expectedString {
+			t.Errorf("Test %d failed. The result should have been %s. Instead we got %s.", index, test.expectedString, test.card.String())
+		}
+	}
+}

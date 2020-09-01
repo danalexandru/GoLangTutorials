@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"sort"
+	"strings"
 )
 
 // Card ...
@@ -12,6 +13,22 @@ import (
 type Card struct {
 	Value int
 	Type  string
+}
+
+func (card Card) String() string {
+	titledType := strings.Title(card.Type)
+	switch {
+	case card.Value == 11:
+		return fmt.Sprintf("Ace of %s", titledType)
+	case card.Value == 12:
+		return fmt.Sprintf("Jack of %s", titledType)
+	case card.Value == 13:
+		return fmt.Sprintf("Queen of %s", titledType)
+	case card.Value == 14:
+		return fmt.Sprintf("King of %s", titledType)
+	default:
+		return fmt.Sprintf("%d of %s", card.Value, titledType)
+	}
 }
 
 // NewCard ...
