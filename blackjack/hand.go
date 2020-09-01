@@ -19,6 +19,12 @@ func (hand Hand) String() string {
 	return strings.Join(result, ", ")
 }
 
+// CustomString ...
+// This is a custom method that will be used by the dealer instead of using the regular "String" method at the beginning
+func (hand Hand) CustomString() string {
+	return hand[0].String() + ", **HIDDEN**"
+}
+
 // Push ...
 // This method adds a new card at the end of the current hand
 // Parameters:
