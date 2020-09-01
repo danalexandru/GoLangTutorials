@@ -75,3 +75,27 @@ func TestString(t *testing.T) {
 			expectedResult, hand.String())
 	}
 }
+
+func TestHand(t *testing.T) {
+	hand := Hand{}
+
+	hand.Push(deck.Card{Value: 2, Type: "spades"})
+	hand.Push(deck.Card{Value: 4, Type: "spades"})
+	hand.Push(deck.Card{Value: 6, Type: "spades"})
+
+	if hand.Size() != 3 {
+		t.Errorf("Current hand has %d. Elements. It should have %d.", hand.Size(), 3)
+	}
+
+	hand.Pull()
+
+	if hand.Size() != 2 {
+		t.Errorf("Current hand has %d. Elements. It should have %d.", hand.Size(), 2)
+	}
+
+	hand.Clear()
+
+	if hand.Size() != 0 {
+		t.Errorf("Hand should be empty. Instead it has %d elements.", hand.Size())
+	}
+}

@@ -1,23 +1,8 @@
 package blackjack
 
 import (
-	"strings"
-
 	deck "../deckofcards"
 )
-
-// Hand ...
-// The current cards that a player / dealer has
-type Hand []deck.Card
-
-func (hand Hand) String() string {
-	result := make([]string, len(hand))
-	for i, card := range hand {
-		result[i] = card.String()
-	}
-
-	return strings.Join(result, ", ")
-}
 
 // GenerateBlackjackDeck ...
 // This method returns a number of decks concatenated together to be used in the blackjack game
