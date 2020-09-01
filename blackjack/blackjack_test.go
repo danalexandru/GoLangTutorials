@@ -1,7 +1,6 @@
 package blackjack
 
 import (
-	"fmt"
 	"testing"
 
 	deck "../deckofcards"
@@ -127,8 +126,7 @@ func TestInitGame(t *testing.T) {
 			t.Errorf("Expecting player no #%d to have %d cards. Instead he has %d.", i, 2, player.Size())
 		}
 	}
-	fmt.Println(players)
-	fmt.Println(dealer)
+
 	if dealer.Size() != 2 {
 		t.Errorf("The dealer should have %d cards. Instead he has %d.", 2, dealer.Size())
 	}

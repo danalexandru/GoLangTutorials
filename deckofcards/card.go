@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"sort"
 	"strings"
+	"time"
 )
 
 // Card ...
@@ -81,8 +82,18 @@ func NewDeck() ([]Card, error) {
 // Parameters:
 // - deckOfCards: ([]Card) The current deck of cards, presumably unshuffled
 func ShuffleDeck(deckOfCards []Card) {
-	rand.Shuffle(len(deckOfCards), func(i, j int) { deckOfCards[i], deckOfCards[j] = deckOfCards[j], deckOfCards[i] })
-	// fmt.Println(LogMessage("info.deck.shuffled.deck", fmt.Sprintf("%v", deckOfCards)))
+
+	shuffledDeck := make([]Card, len(deckOfCards))
+	shuffleRand := rand.New(rand.NewSource(time.Now().Unix()))
+	permutations := shuffleRand.Perm(len(deckOfCards))
+
+	for i, j := range permutations {
+		shuffledDeck[i] = deckOfCards[j]
+	}
+
+	for i := 0; i < len(deckOfCards); i++ {
+		deckOfCards[i] = shuffledDeck[i]
+	}
 }
 
 // SortDeck ...

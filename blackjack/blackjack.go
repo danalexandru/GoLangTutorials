@@ -1,8 +1,6 @@
 package blackjack
 
 import (
-	"fmt"
-
 	deck "../deckofcards"
 )
 
@@ -70,6 +68,5 @@ func InitGame(numberOfDecks int, numberOfPlayers int) ([]deck.Card, Hand, []Hand
 		dealer.Push(DrawCard(&deckOfCards))
 	}
 
-	fmt.Println(players)
 	return deckOfCards, dealer, players, nil
 }
