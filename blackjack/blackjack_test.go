@@ -1,6 +1,7 @@
 package blackjack
 
 import (
+	"fmt"
 	"testing"
 
 	deck "../deckofcards"
@@ -33,9 +34,9 @@ func TestDrawCard(t *testing.T) {
 
 	numberOfCardsInDeck := len(deckOfCards)
 	lastCard := deckOfCards[numberOfCardsInDeck-1]
-	drawnCard := DrawCard(deckOfCards)
+	drawnCard := DrawCard(&deckOfCards)
 
-	if len(deckOfCards) != numberOfCardsInDeck {
+	if len(deckOfCards) != numberOfCardsInDeck-1 {
 		t.Errorf("The deck should have %d after the last card was drawn. Instead, the deck has %d.", numberOfCardsInDeck-1, len(deckOfCards))
 	}
 
@@ -97,5 +98,38 @@ func TestHand(t *testing.T) {
 
 	if hand.Size() != 0 {
 		t.Errorf("Hand should be empty. Instead it has %d elements.", hand.Size())
+	}
+}
+
+func TestInitGame(t *testing.T) {
+	deckOfCards, dealer, players, err := InitGame(3, 3)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	totalNumberOfCardsInDeck := len(func() []deck.Card {
+		deckOfCards, _ := GenerateBlackjackDeck(3)
+		return deckOfCards
+	}())
+
+	totalNumberOfCardsAfterInitGame := len(deckOfCards) + len(players)*2 + 2
+	if totalNumberOfCardsAfterInitGame != totalNumberOfCardsInDeck {
+		t.Errorf("Inconsistent number of cards after init game. Expecting %d. Instead we got %d.", totalNumberOfCardsInDeck, totalNumberOfCardsAfterInitGame)
+	}
+
+	if len(players) != 3 {
+		t.Errorf("Expecting %d players. Instead we got %d.", 3, len(players))
+	}
+
+	for i, player := range players {
+		if player.Size() != 2 {
+			t.Errorf("Expecting player no #%d to have %d cards. Instead he has %d.", i, 2, player.Size())
+		}
+	}
+	fmt.Println(players)
+	fmt.Println(dealer)
+	if dealer.Size() != 2 {
+		t.Errorf("The dealer should have %d cards. Instead he has %d.", 2, dealer.Size())
 	}
 }
