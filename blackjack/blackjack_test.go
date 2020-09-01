@@ -43,3 +43,35 @@ func TestDrawCard(t *testing.T) {
 		t.Errorf("The card drawn should have been %v. Instead, the \"DrawCard\" method got %v.", lastCard, drawnCard)
 	}
 }
+
+func TestString(t *testing.T) {
+	// "spades", "hearts", "diamonds", "clubs"
+	hand := Hand{
+		deck.Card{Value: 2, Type: "spades"},
+		deck.Card{Value: 4, Type: "hearts"},
+		deck.Card{Value: 6, Type: "diamonds"},
+		deck.Card{Value: 8, Type: "clubs"},
+		deck.Card{Value: 10, Type: "spades"},
+		deck.Card{Value: 11, Type: "hearts"},
+		deck.Card{Value: 12, Type: "diamonds"},
+		deck.Card{Value: 13, Type: "clubs"},
+		deck.Card{Value: 14, Type: "spades"},
+	}
+
+	expectedResult := "2 of Spades, " +
+		"4 of Hearts, " +
+		"6 of Diamonds, " +
+		"8 of Clubs, " +
+		"10 of Spades, " +
+		"Ace of Hearts, " +
+		"Jack of Diamonds, " +
+		"Queen of Clubs, " +
+		"King of Spades"
+
+	if hand.String() != expectedResult {
+		t.Errorf("Inconsistent conversion from Hand to string.\n"+
+			"\t- Expected result: \"%s\".\n"+
+			"\t- Received result: \"%s\".",
+			expectedResult, hand.String())
+	}
+}
