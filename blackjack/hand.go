@@ -56,9 +56,18 @@ func (hand Hand) Size() int {
 // This method is used by a player in order to determine whether or not he wants to hit or stand
 // Parameters:
 // - deckOfCards: ([]deck.Card) the current deck of cards
-func (hand Hand) ExecTurn(deckOfCards []deck.Card) {
+func (hand *Hand) ExecTurn(deckOfCards []deck.Card, players []Hand, dealer Hand) {
 	var input string
 	for {
+		fmt.Println("---------------------------")
+		fmt.Println("Current game status: ")
+		fmt.Printf("Dealer: { %s }\n", dealer.CustomString())
+		for i, player := range players {
+			fmt.Printf("Player no #%d: { %s }\n", (i + 1), player.String())
+		}
+		fmt.Println("---------------------------")
+		fmt.Println()
+
 		fmt.Printf("What will you do? (h)it or (s)tand: ")
 		fmt.Scanf("%s\n", &input)
 

@@ -81,7 +81,6 @@ func main() {
 		return
 	}
 
-	_, _, _ = deckOfCards, dealer, players
-
-	dealer.ExecTurn(deckOfCards)
+	players[0].ExecTurn(deckOfCards, players, dealer)
+	fmt.Println("Final: ", players[0].String())
 }
