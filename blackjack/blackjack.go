@@ -120,5 +120,12 @@ func main() {
 	}
 
 	players[0].ExecTurn(deckOfCards, players, dealer)
+	dealer.ExecDealerTurn(deckOfCards)
 
+	fmt.Println("Dealer Hand: ", dealer.String())
+	if dealer.GetBiggestScore() != -1 {
+		fmt.Println("Dealer Score: ", dealer.FormatedScore())
+	} else {
+		fmt.Println("Dealer Busted")
+	}
 }

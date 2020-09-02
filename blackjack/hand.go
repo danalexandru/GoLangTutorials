@@ -171,7 +171,21 @@ func (hand *Hand) ExecTurn(deckOfCards []deck.Card, players []Hand, dealer Hand)
 		}
 
 		if len(hand.Score()) == 0 {
-			fmt.Printf("BUST! Your current cards are: { %s }", hand.String())
+			fmt.Printf("BUST! Your current cards are: { %s }\n", hand.String())
+			return
+		}
+	}
+}
+
+// ExecDealerTurn ...
+// This method executes the dealer's turn
+// Parameters:
+// - deckOfCards: ([]deck.Card) the current deck of cards
+func (hand *Hand) ExecDealerTurn(deckOfCards []deck.Card) {
+	for hand.GetBiggestScore() <= 16 || (hand.GetBiggestScore() == 17 && len(hand.Score()) > 1) {
+		hand.Push(DrawCard(&deckOfCards))
+
+		if hand.GetBiggestScore() == -1 {
 			return
 		}
 	}
