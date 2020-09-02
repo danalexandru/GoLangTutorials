@@ -1,6 +1,8 @@
-package blackjack
+package main
 
 import (
+	"fmt"
+
 	deck "../deckofcards"
 )
 
@@ -69,4 +71,17 @@ func InitGame(numberOfDecks int, numberOfPlayers int) ([]deck.Card, Hand, []Hand
 	}
 
 	return deckOfCards, dealer, players, nil
+}
+
+func main() {
+	deckOfCards, dealer, players, err := InitGame(3, 3)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	_, _, _ = deckOfCards, dealer, players
+
+	dealer.ExecTurn(deckOfCards)
 }

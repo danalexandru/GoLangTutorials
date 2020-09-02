@@ -1,6 +1,7 @@
-package blackjack
+package main
 
 import (
+	"fmt"
 	"strings"
 
 	deck "../deckofcards"
@@ -49,4 +50,25 @@ func (hand *Hand) Clear() {
 // This method returns the number of cards the current hand has
 func (hand Hand) Size() int {
 	return len(hand)
+}
+
+// ExecTurn ....
+// This method is used by a player in order to determine whether or not he wants to hit or stand
+// Parameters:
+// - deckOfCards: ([]deck.Card) the current deck of cards
+func (hand Hand) ExecTurn(deckOfCards []deck.Card) {
+	var input string
+	for {
+		fmt.Printf("What will you do? (h)it or (s)tand: ")
+		fmt.Scanf("%s\n", &input)
+
+		switch input {
+		case "h":
+			hand.Push(DrawCard(&deckOfCards))
+		case "s":
+			return
+		default:
+			fmt.Printf("Invalid string \"%s\". It should be either \"h\" or \"s\".\n", input)
+		}
+	}
 }
