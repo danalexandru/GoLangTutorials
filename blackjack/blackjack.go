@@ -49,6 +49,11 @@ func DrawCard(deckOfCards *[]deck.Card) deck.Card {
 // Parameters:
 // - numberOfDecks: (int) the number of decks containing distinct 52 cards
 // - numberOfPlayers: (int) the number of players for the current game
+// Return:
+// - ([]deck.Card) the current deck of cards
+// - (Hand) the dealer
+// - ([]Hand) the players
+// - (error) if an error occurred
 func InitGame(numberOfDecks int, numberOfPlayers int) ([]deck.Card, Hand, []Hand, error) {
 
 	deckOfCards, err := GenerateBlackjackDeck(numberOfDecks)
