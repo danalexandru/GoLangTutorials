@@ -85,13 +85,14 @@ func InitGame(numberOfDecks int, numberOfPlayers int) ([]deck.Card, Hand, []Hand
 // dealer: (Hand) the dealer of the current game
 // Return:
 // (Hand) the winner of the game
-func GetWinner(players []Hand, dealer Hand) {
+func GetWinner(players []Hand, dealer Hand) Hand {
 	var bestPlayer Hand
 	bestPlayerIndex := 0
-	copy(bestPlayer, players[0])
+	bestPlayer = players[0]
+
 	for i := 1; i < len(players); i++ {
-		if bestPlayer.GetBiggestScore() > players[i].GetBiggestScore() {
-			copy(bestPlayer, players[i])
+		if bestPlayer.GetBiggestScore() < players[i].GetBiggestScore() {
+			bestPlayer = players[i]
 			bestPlayerIndex = i
 		}
 	}
@@ -99,15 +100,20 @@ func GetWinner(players []Hand, dealer Hand) {
 	bestPlayerScore := bestPlayer.GetBiggestScore()
 	dealerScore := dealer.GetBiggestScore()
 
+	fmt.Printf("\nWinner:\n")
 	switch {
 	case bestPlayerScore > dealerScore:
-		fmt.Printf("Player no #%d won. Final score: %d.\n", bestPlayerIndex, bestPlayer.GetBiggestScore())
+		fmt.Printf("\tPlayer no #%d won. Final score: %d.\n", (bestPlayerIndex + 1), bestPlayer.GetBiggestScore())
+		return bestPlayer
 	case bestPlayerScore < dealerScore:
-		fmt.Printf("Dealer won. Final score: %d.\n", dealerScore)
+		fmt.Printf("\tDealer won. Final score: %d.\n", dealerScore)
+		return dealer
 	case bestPlayerScore == dealerScore && bestPlayerScore == -1:
-		fmt.Printf("All players and the dealer have BUSTED. (:.\n")
+		fmt.Printf("\tAll players and the dealer have BUSTED. (:.\n")
+		return Hand{}
 	default:
-		fmt.Printf("Tie between player no #%d and the dealer. Final Score: %d.\n", bestPlayerIndex, bestPlayerScore)
+		fmt.Printf("\tTie between player no #%d and the dealer. Final Score: %d.\n", (bestPlayerIndex + 1), bestPlayerScore)
+		return bestPlayer
 	}
 }
 
@@ -119,16 +125,29 @@ func main() {
 		return
 	}
 
-	fmt.Println("---------------------------")
-	fmt.Println("Current game status: ")
-	fmt.Printf("Dealer: { %s } \n", dealer.CustomString())
-	for i, player := range players {
-		fmt.Printf("Player no #%d: { { %s }, { Score: %s } }\n", (i + 1), player.String(), player.FormatedScore())
-	}
-	fmt.Println("---------------------------")
+	for len(deckOfCards) != 0 {
+		fmt.Println("---------------------------")
+		fmt.Println("Current game status: ")
+		fmt.Printf("Dealer: { %s } \n", dealer.CustomString())
+		for i, player := range players {
+			fmt.Printf("Player no #%d: { { %s }, { Score: %s } }\n", (i + 1), player.String(), player.FormatedScore())
+		}
+		fmt.Println("---------------------------")
 
-	players[0].ExecTurn(deckOfCards)
-	dealer.ExecDealerTurn(deckOfCards)
+		for i, player := range players {
+			fmt.Println("-----")
+			fmt.Printf("Player no #%d)\n", (i + 1))
+			player.ExecTurn(&deckOfCards)
+			fmt.Println("-----")
+			fmt.Println()
+		}
+		dealer.ExecDealerTurn(&deckOfCards)
+
+		GetWinner(players, dealer)
+	}
+
+	// players[0].ExecTurn(&deckOfCards)
+	// dealer.ExecDealerTurn(&deckOfCards)
 
 	fmt.Println("Dealer Hand: ", dealer.String())
 	if dealer.GetBiggestScore() != -1 {

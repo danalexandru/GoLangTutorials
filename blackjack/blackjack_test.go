@@ -131,3 +131,21 @@ func TestInitGame(t *testing.T) {
 		t.Errorf("The dealer should have %d cards. Instead he has %d.", 2, dealer.Size())
 	}
 }
+
+func TestGetWinner(t *testing.T) {
+	players := []Hand{
+		Hand{deck.Card{Value: 11, Type: "spades"}, deck.Card{Value: 7, Type: "spades"}},
+		Hand{deck.Card{Value: 11, Type: "spades"}, deck.Card{Value: 13, Type: "spades"}},
+		Hand{deck.Card{Value: 7, Type: "spades"}, deck.Card{Value: 6, Type: "spades"}},
+	}
+
+	dealer := Hand{deck.Card{Value: 7, Type: "spades"}, deck.Card{Value: 6, Type: "spades"}}
+	winner := GetWinner(players, dealer)
+
+	for i := range winner {
+		if winner[i] != players[1][i] {
+			t.Errorf("Test Failed.\n\t- Winner: %v\n\tReceived: %v", players[1], winner)
+		}
+	}
+
+}

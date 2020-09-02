@@ -87,7 +87,21 @@ func (hand Hand) Score() []int {
 		result = result[:len(result)-1]
 	}
 
-	return result
+	unique := func(list []int) []int {
+		keys := make(map[int]bool)
+		uniqueList := []int{}
+
+		for _, entry := range list {
+			if _, value := keys[entry]; !value {
+				keys[entry] = true
+				uniqueList = append(uniqueList, entry)
+			}
+		}
+
+		return uniqueList
+	}
+
+	return unique(result)
 }
 
 // FormatedScore ...
@@ -144,7 +158,7 @@ func (hand Hand) GetBiggestScore() int {
 // This method is used by a player in order to determine whether or not he wants to hit or stand
 // Parameters:
 // - deckOfCards: ([]deck.Card) the current deck of cards
-func (hand *Hand) ExecTurn(deckOfCards []deck.Card) {
+func (hand *Hand) ExecTurn(deckOfCards *[]deck.Card) {
 	var input string
 	for {
 		fmt.Println()
@@ -157,7 +171,7 @@ func (hand *Hand) ExecTurn(deckOfCards []deck.Card) {
 
 		switch input {
 		case "h":
-			hand.Push(DrawCard(&deckOfCards))
+			hand.Push(DrawCard(deckOfCards))
 		case "s":
 			fmt.Println()
 			return
@@ -176,12 +190,16 @@ func (hand *Hand) ExecTurn(deckOfCards []deck.Card) {
 // This method executes the dealer's turn
 // Parameters:
 // - deckOfCards: ([]deck.Card) the current deck of cards
-func (hand *Hand) ExecDealerTurn(deckOfCards []deck.Card) {
+func (hand *Hand) ExecDealerTurn(deckOfCards *[]deck.Card) {
 	for hand.GetBiggestScore() <= 16 || (hand.GetBiggestScore() == 17 && len(hand.Score()) > 1) {
-		hand.Push(DrawCard(&deckOfCards))
+		hand.Push(DrawCard(deckOfCards))
 
 		if hand.GetBiggestScore() == -1 {
-			return
+			break
 		}
 	}
+
+	fmt.Printf("Dealer cards: { %s }\n", hand.String())
+	fmt.Printf("Dealer score: %s\n", hand.FormatedScore())
+	fmt.Println()
 }
