@@ -144,18 +144,12 @@ func (hand Hand) GetBiggestScore() int {
 // This method is used by a player in order to determine whether or not he wants to hit or stand
 // Parameters:
 // - deckOfCards: ([]deck.Card) the current deck of cards
-// - players: ([]Hand) the players (including the current one)
-// - dealer: (Hand) the dealer
-func (hand *Hand) ExecTurn(deckOfCards []deck.Card, players []Hand, dealer Hand) {
+func (hand *Hand) ExecTurn(deckOfCards []deck.Card) {
 	var input string
 	for {
-		fmt.Println("---------------------------")
-		fmt.Println("Current game status: ")
-		fmt.Printf("Dealer: { %s } \n", dealer.CustomString())
-		for i, player := range players {
-			fmt.Printf("Player no #%d: { { %s }, { Score: %s } }\n", (i + 1), player.String(), player.FormatedScore())
-		}
-		fmt.Println("---------------------------")
+		fmt.Println()
+		fmt.Printf("\t- Current cards: { %s }\n", hand.String())
+		fmt.Printf("\t- Current score: %s\n", hand.FormatedScore())
 		fmt.Println()
 
 		fmt.Printf("What will you do? (h)it or (s)tand: ")
@@ -165,6 +159,7 @@ func (hand *Hand) ExecTurn(deckOfCards []deck.Card, players []Hand, dealer Hand)
 		case "h":
 			hand.Push(DrawCard(&deckOfCards))
 		case "s":
+			fmt.Println()
 			return
 		default:
 			fmt.Printf("Invalid string \"%s\". It should be either \"h\" or \"s\".\n", input)

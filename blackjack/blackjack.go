@@ -119,7 +119,15 @@ func main() {
 		return
 	}
 
-	players[0].ExecTurn(deckOfCards, players, dealer)
+	fmt.Println("---------------------------")
+	fmt.Println("Current game status: ")
+	fmt.Printf("Dealer: { %s } \n", dealer.CustomString())
+	for i, player := range players {
+		fmt.Printf("Player no #%d: { { %s }, { Score: %s } }\n", (i + 1), player.String(), player.FormatedScore())
+	}
+	fmt.Println("---------------------------")
+
+	players[0].ExecTurn(deckOfCards)
 	dealer.ExecDealerTurn(deckOfCards)
 
 	fmt.Println("Dealer Hand: ", dealer.String())
