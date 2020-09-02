@@ -78,6 +78,39 @@ func InitGame(numberOfDecks int, numberOfPlayers int) ([]deck.Card, Hand, []Hand
 	return deckOfCards, dealer, players, nil
 }
 
+// GetWinner ...
+// This method returns the winner of the game
+// Parameters:
+// players: ([]Hand) all the players of the current game
+// dealer: (Hand) the dealer of the current game
+// Return:
+// (Hand) the winner of the game
+func GetWinner(players []Hand, dealer Hand) {
+	var bestPlayer Hand
+	bestPlayerIndex := 0
+	copy(bestPlayer, players[0])
+	for i := 1; i < len(players); i++ {
+		if bestPlayer.GetBiggestScore() > players[i].GetBiggestScore() {
+			copy(bestPlayer, players[i])
+			bestPlayerIndex = i
+		}
+	}
+
+	bestPlayerScore := bestPlayer.GetBiggestScore()
+	dealerScore := dealer.GetBiggestScore()
+
+	switch {
+	case bestPlayerScore > dealerScore:
+		fmt.Printf("Player no #%d won. Final score: %d.\n", bestPlayerIndex, bestPlayer.GetBiggestScore())
+	case bestPlayerScore < dealerScore:
+		fmt.Printf("Dealer won. Final score: %d.\n", dealerScore)
+	case bestPlayerScore == dealerScore && bestPlayerScore == -1:
+		fmt.Printf("All players and the dealer have BUSTED. (:.\n")
+	default:
+		fmt.Printf("Tie between player no #%d and the dealer. Final Score: %d.\n", bestPlayerIndex, bestPlayerScore)
+	}
+}
+
 func main() {
 	deckOfCards, dealer, players, err := InitGame(3, 3)
 

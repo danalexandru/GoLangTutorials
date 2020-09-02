@@ -90,6 +90,56 @@ func (hand Hand) Score() []int {
 	return result
 }
 
+// FormatedScore ...
+// This method formats the score in a user-firendly manner
+// Parameters:
+// - score: ([]int) the soft scores returned by the "Score" method
+func (hand Hand) FormatedScore() string {
+	score := hand.Score()
+
+	switch len(score) {
+	case 0:
+		return fmt.Sprintf("BUST")
+	case 1:
+		if score[0] == 21 {
+			return "BLACKJACK"
+		}
+		return fmt.Sprintf("%d", score[0])
+
+	default:
+		result := fmt.Sprintf("%d", score[0])
+		for i := 1; i < len(score); i++ {
+			if score[i] == 21 {
+				result = fmt.Sprintf("%s, BLACKJACK", result)
+			} else {
+				result = fmt.Sprintf("%s, %d", result, score[i])
+			}
+		}
+		return "[ " + result + " ]"
+	}
+
+}
+
+// GetBiggestScore ...
+// This method returns the greathest score of the current player
+func (hand Hand) GetBiggestScore() int {
+	allScores := hand.Score()
+
+	switch len(allScores) {
+	case 0:
+		return -1 // Bust
+	default:
+		maxScore := -1
+		for _, softScore := range allScores {
+			if softScore > maxScore {
+				maxScore = softScore
+			}
+		}
+
+		return maxScore
+	}
+}
+
 // ExecTurn ....
 // This method is used by a player in order to determine whether or not he wants to hit or stand
 // Parameters:
@@ -103,7 +153,7 @@ func (hand *Hand) ExecTurn(deckOfCards []deck.Card, players []Hand, dealer Hand)
 		fmt.Println("Current game status: ")
 		fmt.Printf("Dealer: { %s } \n", dealer.CustomString())
 		for i, player := range players {
-			fmt.Printf("Player no #%d: { { %s }, { Score: %s } }\n", (i + 1), player.String(), formatScore(player.Score()))
+			fmt.Printf("Player no #%d: { { %s }, { Score: %s } }\n", (i + 1), player.String(), player.FormatedScore())
 		}
 		fmt.Println("---------------------------")
 		fmt.Println()
@@ -121,22 +171,8 @@ func (hand *Hand) ExecTurn(deckOfCards []deck.Card, players []Hand, dealer Hand)
 		}
 
 		if len(hand.Score()) == 0 {
-			fmt.Printf("BLACKJACK! Your current cards are: { %s }", hand.String())
+			fmt.Printf("BUST! Your current cards are: { %s }", hand.String())
 			return
 		}
 	}
-}
-
-func formatScore(score []int) string {
-	switch len(score) {
-	case 0:
-		return fmt.Sprintf("BLACKJACK")
-	default:
-		result := fmt.Sprintf("%d", score[0])
-		for i := 1; i < len(score); i++ {
-			result = fmt.Sprintf("%s, %d", result, score[i])
-		}
-		return "[ " + result + " ]"
-	}
-
 }
