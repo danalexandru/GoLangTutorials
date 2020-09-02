@@ -103,7 +103,7 @@ func (hand *Hand) ExecTurn(deckOfCards []deck.Card, players []Hand, dealer Hand)
 		fmt.Println("Current game status: ")
 		fmt.Printf("Dealer: { %s } \n", dealer.CustomString())
 		for i, player := range players {
-			fmt.Printf("Player no #%d: { { %s }, { Score: %v } }\n", (i + 1), player.String(), player.Score())
+			fmt.Printf("Player no #%d: { { %s }, { Score: %s } }\n", (i + 1), player.String(), formatScore(player.Score()))
 		}
 		fmt.Println("---------------------------")
 		fmt.Println()
@@ -119,5 +119,24 @@ func (hand *Hand) ExecTurn(deckOfCards []deck.Card, players []Hand, dealer Hand)
 		default:
 			fmt.Printf("Invalid string \"%s\". It should be either \"h\" or \"s\".\n", input)
 		}
+
+		if len(hand.Score()) == 0 {
+			fmt.Printf("BLACKJACK! Your current cards are: { %s }", hand.String())
+			return
+		}
 	}
+}
+
+func formatScore(score []int) string {
+	switch len(score) {
+	case 0:
+		return fmt.Sprintf("BLACKJACK")
+	default:
+		result := fmt.Sprintf("%d", score[0])
+		for i := 1; i < len(score); i++ {
+			result = fmt.Sprintf("%s, %d", result, score[i])
+		}
+		return "[ " + result + " ]"
+	}
+
 }

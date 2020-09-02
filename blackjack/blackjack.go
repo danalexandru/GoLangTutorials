@@ -87,5 +87,5 @@ func main() {
 	}
 
 	players[0].ExecTurn(deckOfCards, players, dealer)
-	fmt.Println("Final: ", players[0].String())
+
 }
