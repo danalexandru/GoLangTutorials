@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/compute/v1"
@@ -43,6 +44,20 @@ func runCustomTerminal(scanner *bufio.Scanner) string {
 	return command
 }
 
+func getCommandParameters(command string) (string, map[string]string) {
+	commandItems := strings.Split(command, "--")
+	initialCommand := commandItems[0][:len(commandItems[0])-1]
+
+	params := make(map[string]string)
+
+	for i := 1; i < len(commandItems); i++ {
+		param := strings.Split(strings.TrimSpace(commandItems[i]), "=")
+		params[param[0]] = param[1]
+	}
+
+	return initialCommand, params
+}
+
 func main() {
 
 	ctx, computeService := getComputeService()
@@ -56,10 +71,21 @@ func main() {
 		command = runCustomTerminal(scanner)
 
 		if function, ok := Execute[command]; ok {
-			result := function(ctx, computeService, project)
+			result := function(ctx, computeService, project, nil)
 			fmt.Println(result)
 		} else {
-			fmt.Printf("Command not found: \"%s\".\n", command)
+			initialCommand, params := getCommandParameters(command)
+
+			if function, ok := Execute[initialCommand]; ok {
+				result := function(ctx, computeService, project, params)
+				fmt.Println(result)
+			} else {
+				fmt.Printf("Command not found: \"%s\".\n", command)
+				/*
+					fmt.Printf("InitialCommand: \"%s\"\n", initialCommand)
+					fmt.Printf("Parameters: %s\n", params["zone"]) */
+			}
+
 		}
 
 	}
