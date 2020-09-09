@@ -39,5 +39,22 @@ func GetVMInstacesList(ctx context.Context, computeService *compute.Service, pro
 		log.Fatal(err)
 	}
 
-	return result
+	return fmt.Sprintf("{\n%s\n}", result)
+}
+
+// GetNetworksList - this api returns a list of all the networks created
+func GetNetworksList(ctx context.Context, computeService *compute.Service, project string, params map[string]string) string {
+	result := ""
+	req := computeService.Networks.List(project)
+
+	if err := req.Pages(ctx, func(page *compute.NetworkList) error {
+		for _, network := range page.Items {
+			result = fmt.Sprintf("%s%#v\n", result, network)
+		}
+		return nil
+	}); err != nil {
+		log.Fatal(err)
+	}
+
+	return fmt.Sprintf("{\n%s\n}", result)
 }
